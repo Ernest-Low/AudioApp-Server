@@ -8,7 +8,8 @@ import registerController from "./controllers/registerController";
 import bodyParser from "body-parser";
 import loginController from "./controllers/loginController";
 import getProfileController from "./controllers/getProfileController";
-import { optionalAuth } from "./middlewares/authHandler";
+import { optionalAuth, requiredAuth } from "./middlewares/authHandler";
+import { updateProfileController } from "./controllers/updateProfileController";
 
 const app: express.Express = express();
 
@@ -25,6 +26,7 @@ const main = async () => {
   app.post("/api/register", registerController);
   app.post("/api/login", loginController);
   app.get("/api/profile/:username", optionalAuth, getProfileController);
+  app.patch("/api/profile/:userId", requiredAuth, updateProfileController);
 
   app.use(errorHandler);
 
