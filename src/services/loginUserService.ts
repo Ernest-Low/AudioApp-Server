@@ -24,13 +24,9 @@ const loginUserService = async (
     throw new CustomError("Invalid credentials", 401);
   }
 
-  const token = jwt.sign(
-    { userId: user.id, username: user.username },
-    config.AUTH_KEY,
-    {
-      expiresIn: "1h",
-    }
-  );
+  const token = jwt.sign({ userId: user.id }, config.AUTH_KEY, {
+    expiresIn: "1h",
+  });
 
   return {
     userId: user.id,

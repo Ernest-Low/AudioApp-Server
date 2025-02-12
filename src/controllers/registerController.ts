@@ -21,7 +21,7 @@ const registerController = async (
 
   try {
     const response = await registerUserService(value);
-    res.status(201).json(response);
+    res.status(201).json({ success: true, data: response });
   } catch (err) {
     next(err);
   }

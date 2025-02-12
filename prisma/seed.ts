@@ -11,10 +11,12 @@ const main = async () => {
       username: "DELETED_USER",
       isPrivate: true,
       bio: "Don't look",
+      lowerUsername: "deleted_user",
       auth: {
         create: {
           email: "doesntexist.itsjustseeding.com",
           password: hashedPassword,
+          lowerEmail: "doesntexist.itsjustseeding.com",
         },
       },
     },

@@ -31,10 +31,12 @@ const registerUserService = async (
         username,
         isPrivate,
         bio: bio ? bio : "Blank bio",
+        lowerUsername: username.toLowerCase(),
         auth: {
           create: {
             email,
             password: await argon2.hash(password),
+            lowerEmail: email.toLowerCase(),
           },
         },
       },

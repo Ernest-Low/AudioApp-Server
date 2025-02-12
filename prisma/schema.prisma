@@ -19,6 +19,8 @@ model User {
   isPrivate Boolean
   bio String        @db.Text
 
+  lowerUsername String @unique @db.VarChar(128)
+
   auth     UserAuth @relation(fields: [authId], references: [id], onDelete: Cascade)
   authId   String   @unique
 
@@ -30,16 +32,17 @@ model UserAuth {
   email    String @unique @db.VarChar(128) 
   password String @db.VarChar(255) 
 
+  lowerEmail String @unique @db.VarChar(128) 
+
   user     User?
 }
 
 model AudioFile {
   id         String   @id @default(uuid())
-  filename   String   @unique
+  songName   String   @db.VarChar(128) 
   filePath   String   @db.VarChar(128) 
   size       Float
   length     Int
-  format     String   @db.VarChar(64) 
   uploadedAt DateTime @default(now())
   isPublic   Boolean  @default(false)
 

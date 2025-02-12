@@ -1,27 +1,27 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { CustomError } from "../utils/CustomError";
 
-const errorHandler: ErrorRequestHandler = (
-  err,
+const errorHandler = (
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  console.error("Error:", err);
+  console.error(err);
 
   if (err instanceof CustomError) {
     res.status(err.statusCode).json({
       success: false,
       message: err.message,
-      ...(err.details && { details: err.details }),
+      details: err.details || null,
     });
-    return;
+  } else {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong on the server.",
+      details: err.message || null,
+    });
   }
-
-  res.status(500).json({
-    success: false,
-    message: "Something went wrong",
-  });
 };
 
 export default errorHandler;
