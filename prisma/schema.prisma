@@ -15,33 +15,34 @@ datasource db {
 
 model User {
   id       String   @id @default(uuid())
-  username String   @unique @db.VarChar(30)
+  username String   @unique @db.VarChar(32)
   isPrivate Boolean
+  bio String        @db.Text
 
   auth     UserAuth @relation(fields: [authId], references: [id], onDelete: Cascade)
-  authId   String @unique
+  authId   String   @unique
 
   files    AudioFile[]
 }
 
 model UserAuth {
   id       String @id @default(uuid())
-  email    String @unique @db.VarChar(100) 
-  password String @db.VarChar(100) 
+  email    String @unique @db.VarChar(64) 
+  password String @db.VarChar(64) 
 
   user     User?
 }
 
 model AudioFile {
-  id         String  @id @default(uuid())
-  filename   String  @unique
-  filePath   String
+  id         String   @id @default(uuid())
+  filename   String   @unique
+  filePath   String   @db.VarChar(64) 
   size       Float
   length     Int
-  format     String
+  format     String   @db.VarChar(32) 
   uploadedAt DateTime @default(now())
-  isPublic   Boolean @default(false)
+  isPublic   Boolean  @default(false)
 
-  user       User   @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   userId     String
 }

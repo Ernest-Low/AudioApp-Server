@@ -13,10 +13,17 @@ const prisma = new PrismaClient();
 const registerUserService = async (
   data: RegisterUserDto
 ): Promise<RegisterUserResponseDto> => {
-  const { username, isPrivate, email, password } = data;
+  const { username, isPrivate, email, password, bio } = data;
 
-  const existingUser = await prisma.userAuth.findUnique({ where: { email } });
-  if (existingUser) {
+  const existingUsername = await prisma.user.findUnique({
+    where: { username },
+  });
+  if (existingUsername) {
+    throw new CustomError("Username is already in use", 400);
+  }
+
+  const existingEmail = await prisma.userAuth.findUnique({ where: { email } });
+  if (existingEmail) {
     throw new CustomError("Email is already in use", 400);
   }
 
@@ -25,6 +32,7 @@ const registerUserService = async (
       data: {
         username,
         isPrivate,
+        bio,
         auth: {
           create: {
             email,
@@ -39,14 +47,15 @@ const registerUserService = async (
       expiresIn: "1h",
     });
 
+    // Refer to DTOs, there are better things to return
     return {
       userId: user.id,
       username: user.username,
-      isPrivate: user.isPrivate,
-      email: user.auth?.email ?? "",
+      // isPrivate: user.isPrivate,
+      // email: user.auth.email,
+      // bio: user.bio,
       jwtToken: token,
     };
-
   } catch (error) {
     throw new CustomError("Failed to create user", 500, error);
   }

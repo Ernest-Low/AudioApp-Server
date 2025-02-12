@@ -7,9 +7,6 @@ const registerController = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  console.log("registerController initiated, receiving:");
-  console.dir(req.body);
-
   const { error, value } = registerUserSchema.validate(req.body, {
     abortEarly: false,
   });
@@ -21,9 +18,7 @@ const registerController = async (
     });
     return;
   }
-  
-  console.log("Leaving registercontroller, here is value:");
-  console.dir(value);
+
   try {
     const response = await registerUserService(value);
     res.status(201).json(response);
