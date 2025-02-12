@@ -6,6 +6,7 @@ import prisma from "../prisma/db/prisma";
 import errorHandler from "./middleware/errorHandler";
 import registerController from "./controllers/registerController";
 import bodyParser from "body-parser";
+import loginController from "./controllers/loginController";
 
 const app: Express = express();
 
@@ -26,6 +27,7 @@ const main = async () => {
 };
 
 app.post("/api/register", registerController);
+app.post("/api/login", loginController);
 
 main()
   .then(async () => {

@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import {
   RegisterUserDto,
   RegisterUserResponseDto,
@@ -7,13 +6,12 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { CustomError } from "../utils/CustomError";
 import { config } from "../config/config";
-
-const prisma = new PrismaClient();
+import prisma from "../../prisma/db/prisma";
 
 const registerUserService = async (
-  data: RegisterUserDto
+  registerUserDto: RegisterUserDto
 ): Promise<RegisterUserResponseDto> => {
-  const { username, isPrivate, email, password, bio } = data;
+  const { username, isPrivate, email, password, bio } = registerUserDto;
 
   const existingUsername = await prisma.user.findUnique({
     where: { username },
@@ -32,7 +30,7 @@ const registerUserService = async (
       data: {
         username,
         isPrivate,
-        bio,
+        bio: bio ? bio : "Blank bio",
         auth: {
           create: {
             email,

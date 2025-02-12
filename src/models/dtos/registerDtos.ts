@@ -22,6 +22,9 @@ export const registerUserSchema = Joi.object({
     "any.required": "Privacy setting is required.",
     "boolean.base": "Privacy setting value must be a boolean.",
   }),
+  bio: Joi.string().messages({
+    "string.base": "Bio must be a string.",
+  }),
 });
 
 export interface RegisterUserDto {
@@ -29,7 +32,7 @@ export interface RegisterUserDto {
   isPrivate: boolean;
   email: string;
   password: string;
-  bio: string;
+  bio?: string; // Lets make this optional in case people don't wanna talk about it
 }
 
 export interface RegisterUserResponseDto {
