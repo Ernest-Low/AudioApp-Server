@@ -157,3 +157,47 @@ export const updateProfileService = async (
     throw new CustomError("Failed to update profile", 500, err);
   }
 };
+
+export const deleteProfileService = async (userId: string): Promise<void> => {
+  await prisma.$transaction(async (tx) => {
+    const user = await tx.user.findUnique({
+      where: { id: userId },
+      include: { files: true },
+    });
+
+    if (!user) {
+      throw new CustomError("User not found", 404);
+    }
+
+    // DELETED_USER user should be seeded, but the userId has to be found
+    const deletedUser = await tx.user.findUnique({
+      where: { username: "DELETED_USER" },
+    });
+
+    if (!deletedUser) {
+      throw new CustomError("DELETED_USER account not found", 500);
+    }
+
+    const publicFiles = user.files.filter((file) => file.isPublic);
+    const nonPublicFiles = user.files.filter((file) => !file.isPublic);
+
+    if (nonPublicFiles.length > 0) {
+      const nonPublicFileIds = nonPublicFiles.map((file) => file.id);
+      await tx.audioFile.deleteMany({
+        where: { id: { in: nonPublicFileIds } },
+      });
+    }
+
+    if (publicFiles.length > 0) {
+      const publicFileIds = publicFiles.map((file) => file.id);
+      await tx.audioFile.updateMany({
+        where: { id: { in: publicFileIds } },
+        data: { userId: deletedUser.id },
+      });
+    }
+
+    await tx.user.delete({
+      where: { id: userId },
+    });
+  });
+};

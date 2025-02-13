@@ -10,6 +10,7 @@ import loginController from "./controllers/loginController";
 import getProfileController from "./controllers/getProfileController";
 import { optionalAuth, requiredAuth } from "./middlewares/authHandler";
 import { updateProfileController } from "./controllers/updateProfileController";
+import { deleteProfileController } from "./controllers/deleteProfileController";
 
 const app: express.Express = express();
 
@@ -27,6 +28,7 @@ const main = async () => {
   app.post("/api/login", loginController);
   app.get("/api/profile/:username", optionalAuth, getProfileController);
   app.patch("/api/profile/:userId", requiredAuth, updateProfileController);
+  app.delete("/api/profile/:userId", requiredAuth, deleteProfileController);
 
   app.use(errorHandler);
 
