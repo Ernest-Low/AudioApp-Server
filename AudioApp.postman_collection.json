@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "7f44acc4-8ad9-4f4b-865b-8b64051970bd",
+		"name": "AudioApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26822197"
+	},
+	"item": [
+		{
+			"name": "registerUser",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Barry\",\r\n    \"isPrivate\": false,\r\n    \"email\": \"barry@gmail.com\",\r\n    \"password\": \"wakakaka\",\r\n    \"bio\": \"This is a description\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loginUser",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Barry\",\r\n    \"password\": \"wakakaka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProfile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/profile/:username",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"profile",
+						":username"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "jerry"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateProfile",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Barry\",\r\n    \"isPrivate\": false,\r\n    \"bio\": \"This is a description 2\",\r\n    \"email\": \"barry@gmail.com\",\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/profile/12e9f4a7-635f-4bc8-97ac-773291e2a077",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"profile",
+						"12e9f4a7-635f-4bc8-97ac-773291e2a077"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteProfile",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/profile/:userId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"profile",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "12e9f4a7-635f-4bc8-97ac-773291e2a077"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadAudio",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "audioName",
+							"value": "Distance",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "By Karsh Kale",
+							"type": "text"
+						},
+						{
+							"key": "category[]",
+							"value": "Electronic",
+							"type": "text"
+						},
+						{
+							"key": "category[]",
+							"value": "World",
+							"type": "text"
+						},
+						{
+							"key": "isPublic",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "audioFile",
+							"type": "file",
+							"src": "/C:/Users/radia/Desktop/Others/All Music/02 Distance.m4a"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/audio/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audio",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateAudio",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"audioName\": \"Distance\",\r\n    \"isPublic\": true,\r\n    \"description\": \"It's a song \",\r\n    \"category\": [\r\n        \"Jazz\",\r\n        \"World\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/audio/:audioId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audio",
+						":audioId"
+					],
+					"variable": [
+						{
+							"key": "audioId",
+							"value": "6c9f3886-405a-4b3b-9a8d-0464d3c84a16"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAudio",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/audio/:audioId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audio",
+						":audioId"
+					],
+					"variable": [
+						{
+							"key": "audioId",
+							"value": "0ae6c760-2e25-4923-880c-9024580e0d2a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "streamAudio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/audio/stream/:audioId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audio",
+						"stream",
+						":audioId"
+					],
+					"variable": [
+						{
+							"key": "audioId",
+							"value": "0b7f28ff-e9f6-4d80-a194-e5c28572615c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAudioData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/audio/:audioId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audio",
+						":audioId"
+					],
+					"variable": [
+						{
+							"key": "audioId",
+							"value": "0b7f28ff-e9f6-4d80-a194-e5c28572615c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listAudio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/audiolist?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"audiolist"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "category",
+							"value": "Jazz",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3Mzc2ZTNhMy1iNzdiLTRhOTEtYWYzMC0yNjA2N2FiOGM5OTMiLCJpYXQiOjE3Mzk0NTkyNTgsImV4cCI6MTczOTQ2Mjg1OH0.0GjPyuWphzUCWdMnOcfuromXrpIf9HLUCg3TNSh3Jvw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
