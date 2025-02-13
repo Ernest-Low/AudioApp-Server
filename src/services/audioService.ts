@@ -1,6 +1,6 @@
 import prisma from "../../prisma/db/prisma";
 import {
-  AudioStreamResponseDto,
+  ShortAudioResponseDto,
   UpdateAudioDto,
   UploadAudioDto,
 } from "../models/dtos/audioDtos";
@@ -181,10 +181,10 @@ export const deleteAudioService = async (
   });
 };
 
-export const getAudioService = async (
+export const streamAudioService = async (
   audioId: string,
   userId?: string
-): Promise<AudioStreamResponseDto> => {
+): Promise<{ filePath: string }> => {
   const audioFile = await prisma.audioFile.findUnique({
     where: { id: audioId },
     include: {
@@ -201,11 +201,59 @@ export const getAudioService = async (
   }
 
   return {
+    filePath: audioFile.filePath,
+  };
+};
+
+export const getAudioDataService = async (
+  audioId: string,
+  userId?: string
+): Promise<AudioResponseDto> => {
+  const audioFile = await prisma.audioFile.findUnique({
+    where: { id: audioId },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!audioFile) {
+    throw new CustomError("Audio file not found", 404);
+  }
+
+  if (!audioFile.isPublic && audioFile.userId !== userId) {
+    throw new CustomError("Access denied", 403);
+  }
+
+  return {
     audioId: audioFile.id,
     audioName: audioFile.audioName,
     category: audioFile.category,
-    length: audioFile.length,
+    length: formatSeconds(audioFile.length),
     description: audioFile.description,
-    filePath: audioFile.filePath,
   };
+};
+
+export const listAudioFilesService = async (
+  userId?: string,
+  categories?: string[],
+  page: number = 1,
+  pageSize: number = 20
+): Promise<ShortAudioResponseDto[]> => {
+  const skip = (page - 1) * pageSize;
+  const audioFiles = await prisma.audioFile.findMany({
+    where: {
+      OR: [{ isPublic: true }, { userId: userId || undefined }],
+      category: categories ? { hasSome: categories } : undefined,
+    },
+    orderBy: { uploadedAt: "desc" },
+    skip,
+    take: pageSize,
+  });
+
+  return audioFiles.map((audio) => ({
+    audioId: audio.id,
+    audioName: audio.audioName,
+    category: audio.category,
+    length: formatSeconds(audio.length),
+  }));
 };

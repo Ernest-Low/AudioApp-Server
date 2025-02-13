@@ -2,8 +2,6 @@ import prisma from "./db/prisma";
 import argon2 from "argon2";
 
 const main = async () => {
-  const hashedPassword = await argon2.hash("itsadeleteduser");
-
   await prisma.user.upsert({
     where: { username: "DELETED_USER" },
     update: {},
@@ -15,8 +13,44 @@ const main = async () => {
       auth: {
         create: {
           email: "doesntexist.itsjustseeding.com",
-          password: hashedPassword,
+          password: await argon2.hash("itsadeleteduser"),
           lowerEmail: "doesntexist.itsjustseeding.com",
+        },
+      },
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { username: "Jerry" },
+    update: {},
+    create: {
+      username: "Jerry",
+      isPrivate: false,
+      bio: "I'm Jerry~!",
+      lowerUsername: "jerry",
+      auth: {
+        create: {
+          email: "jerry.itsjustseeding.com",
+          password: await argon2.hash("itsmejerry"),
+          lowerEmail: "jerry.itsjustseeding.com",
+        },
+      },
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { username: "Harry" },
+    update: {},
+    create: {
+      username: "Jerry",
+      isPrivate: true,
+      bio: "I'm Harry~!",
+      lowerUsername: "harry",
+      auth: {
+        create: {
+          email: "harry.itsjustseeding.com",
+          password: await argon2.hash("itsmeharry"),
+          lowerEmail: "harry.itsjustseeding.com",
         },
       },
     },

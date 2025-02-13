@@ -6,9 +6,7 @@ import prisma from "../prisma/db/prisma";
 import errorHandler from "./middlewares/errorHandler";
 import bodyParser from "body-parser";
 import { optionalAuth, requiredAuth } from "./middlewares/authHandler";
-
 import handleFileUpload from "./middlewares/handleFileUpload";
-
 import controllers from "./controllers/controllers";
 
 const app: express.Express = express();
@@ -56,7 +54,17 @@ const main = async () => {
     requiredAuth,
     controllers.deleteAudioController
   );
-  app.get("/api/audio/:audioId", optionalAuth, controllers.getAudioController);
+  app.get(
+    "/api/audio/stream/:audioId",
+    optionalAuth,
+    controllers.streamAudioController
+  );
+  app.get("/api/audiolist", optionalAuth, controllers.listAudioController);
+  app.get(
+    "/api/audio/:audioId",
+    optionalAuth,
+    controllers.getAudioDataController
+  );
 
   app.use(errorHandler);
 
