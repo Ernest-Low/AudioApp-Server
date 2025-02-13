@@ -65,3 +65,11 @@ A Postman collection JSON file with all available API endpoints is included for 
 - Audio file management (Upload, Update, Delete, List)
 
 You can import the Postman collection by downloading the **`postman_collection.json`** file included in this repository.
+
+For the .env file, it requires the following:
+PORT - Any port for hosting the server on, I used 3000
+AUTH_KEY - for the JWT, any string will do
+UPLOAD_DIR - Directory in root that the uploaded audio files will go to. I used "uploads/audio/"
+DATABASE_URL - For prisma. This used PostgreSQL, so the url goes something like this: "postgresql://username:password@localhost:5432/audioapp?schema=audioapp"
+
+If you're looking to host the frontend along, under config it has allowedOrigins.ts. Include the url there (default, has "http://localhost:5173")
