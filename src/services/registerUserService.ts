@@ -14,13 +14,15 @@ const registerUserService = async (
   const { username, isPrivate, email, password, bio } = registerUserDto;
 
   const existingUsername = await prisma.user.findUnique({
-    where: { username },
+    where: { lowerUsername: username.toLowerCase() },
   });
   if (existingUsername) {
     throw new CustomError("Username is already in use", 400);
   }
 
-  const existingEmail = await prisma.userAuth.findUnique({ where: { email } });
+  const existingEmail = await prisma.userAuth.findUnique({
+    where: { lowerEmail: email.toLowerCase() },
+  });
   if (existingEmail) {
     throw new CustomError("Email is already in use", 400);
   }

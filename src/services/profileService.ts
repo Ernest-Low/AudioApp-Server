@@ -76,6 +76,12 @@ export const updateProfileService = async (
     {};
 
   if (data.username && data.username !== foundUser.username) {
+    const existingUsername = await prisma.user.findUnique({
+      where: { lowerUsername: data.username.toLowerCase() },
+    });
+    if (existingUsername) {
+      throw new CustomError("Username is already in use", 400);
+    }
     userData.username = data.username;
     userData.lowerUsername = data.username.toLowerCase();
   }
@@ -86,6 +92,12 @@ export const updateProfileService = async (
     userData.bio = data.bio;
   }
   if (data.email && data.email !== foundUser.auth.email) {
+    const existingEmail = await prisma.userAuth.findUnique({
+      where: { lowerEmail: data.email.toLowerCase() },
+    });
+    if (existingEmail) {
+      throw new CustomError("Email is already in use", 400);
+    }
     authData.email = data.email;
     authData.lowerEmail = data.email.toLowerCase();
   }
