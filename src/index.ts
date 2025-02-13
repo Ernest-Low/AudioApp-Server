@@ -13,6 +13,7 @@ import { updateProfileController } from "./controllers/updateProfileController";
 import { deleteProfileController } from "./controllers/deleteProfileController";
 import { uploadAudioController } from "./controllers/uploadAudioController";
 import handleFileUpload from "./middlewares/handleFileUpload";
+import { updateAudioController } from "./controllers/updateAudioController";
 
 const app: express.Express = express();
 
@@ -37,6 +38,7 @@ const main = async () => {
     handleFileUpload,
     uploadAudioController
   );
+  app.patch("/api/audio/:audioId", requiredAuth, updateAudioController);
 
   app.use(errorHandler);
 

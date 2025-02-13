@@ -42,6 +42,31 @@ export interface UploadAudioDto {
   category: string[];
 }
 
+export const updateAudioSchema = Joi.object({
+  songName: Joi.string().min(2).max(128).messages({
+    "string.base": "Song name must be a string",
+    "string.min": "Song name must be at least 2 characters long",
+    "string.max": "Song name cannot be longer than 128 characters",
+  }),
+  isPublic: Joi.boolean().messages({
+    "boolean.base": "isPublic must be a boolean value",
+  }),
+  category: Joi.array().items(Joi.string()).messages({
+    "array.base": "Category must be an array of strings",
+    "string.base": "Each category item must be a string",
+  }),
+  description: Joi.string().messages({
+    "string.base": "Description must be a string",
+  }),
+});
+
+export interface UpdateAudioDto {
+  songName?: string;
+  isPublic?: boolean;
+  category?: string[];
+  description?: string;
+}
+
 export interface ShortAudioResponseDto {
   songId: string;
   songName: string;

@@ -1,5 +1,5 @@
 import prisma from "../../prisma/db/prisma";
-import { UploadAudioDto } from "../models/dtos/audioDtos";
+import { UpdateAudioDto, UploadAudioDto } from "../models/dtos/audioDtos";
 import { CustomError } from "../utils/CustomError";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
@@ -94,4 +94,41 @@ export const uploadAudioService = async (
     });
     throw new CustomError("Failed to save audio file to database", 500, error);
   }
+};
+
+export const updateAudioService = async (
+  userId: string,
+  audioId: string,
+  updates: UpdateAudioDto
+): Promise<AudioResponseDto> => {
+  const audioFile = await prisma.audioFile.findUnique({
+    where: { id: audioId },
+  });
+
+  if (updates.category !== undefined) {
+    validateAudioCategory(updates.category);
+  }
+
+  if (!audioFile) {
+    throw new CustomError("Audio file not found", 404);
+  }
+
+  if (audioFile.userId !== userId) {
+    throw new CustomError("Unauthorized to update this audio file", 403);
+  }
+
+  const updatedAudio = await prisma.audioFile.update({
+    where: { id: audioId },
+    data: updates,
+  });
+
+  const resDto: AudioResponseDto = {
+    songId: updatedAudio.id,
+    songName: updatedAudio.songName,
+    description: updatedAudio.description,
+    category: updatedAudio.category,
+    length: formatSeconds(updatedAudio.length),
+  };
+
+  return resDto;
 };
