@@ -136,3 +136,4 @@ docker-compose.yml
 
 # Audio files (No way those go in)
 src/uploads/audio
+uploads/audio

@@ -9,6 +9,7 @@ import { getAudioDuration, convertToMp3 } from "../utils/audioUtils";
 import validateAudioCategory from "../utils/validateAudioCategory";
 import { AudioResponseDto } from "../models/dtos/audioDtos";
 import { formatSeconds } from "../utils/formatValues";
+import { config } from "../config/config";
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
@@ -17,7 +18,10 @@ export const uploadAudioService = async (
   file: Express.Multer.File,
   metadata: UploadAudioDto
 ): Promise<AudioResponseDto> => {
-  let filePath = `/uploads/audio/${file.filename}`;
+  // let filePath = `/uploads/audio/${file.filename}`;
+  let filePath = `${config.FULL_AUDIO_DIR}${file.filename}`;
+  // console.log("config.upload_dir: " + config.FULL_AUDIO_DIR);
+  // console.log(`initial filepath: ${config.FULL_AUDIO_DIR}${file.filename}`);
   let size = file.size;
   const targetFormat = "mp3";
   const ext = path.extname(file.filename).toLowerCase();
@@ -30,7 +34,9 @@ export const uploadAudioService = async (
 
     try {
       await convertToMp3(file.path, outputFullPath);
-      filePath = `/uploads/audio/${outputFileName}`;
+      // filePath = `/uploads/audio/${outputFileName}`;
+      filePath = `${config.FULL_AUDIO_DIR}${outputFileName}`;
+      console.log(`new filepath: ${config.FULL_AUDIO_DIR}${outputFileName}`);
       const stats = fs.statSync(outputFullPath);
       size = stats.size;
       tempFilePaths.push(outputFullPath);
@@ -67,7 +73,7 @@ export const uploadAudioService = async (
     const audioFile = await prisma.audioFile.create({
       data: {
         songName: metadata.songName,
-        filePath,
+        filePath: `${config.AUDIO_DIR}${file.filename}`,
         size,
         length,
         isPublic: metadata.isPublic ?? false,
@@ -131,4 +137,43 @@ export const updateAudioService = async (
   };
 
   return resDto;
+};
+
+export const deleteAudioService = async (
+  userId: string,
+  audioId: string
+): Promise<void> => {
+  const audioFile = await prisma.audioFile.findUnique({
+    where: { id: audioId },
+  });
+
+  if (!audioFile) {
+    throw new CustomError("Audio file not found", 404);
+  }
+
+  if (audioFile.userId !== userId) {
+    throw new CustomError("Unauthorized to delete this audio file", 403);
+  }
+
+  const absoluteFilePath = path.join(__dirname, "../../", audioFile.filePath);
+  // console.log("absoluteFilePath: " + absoluteFilePath);
+
+  if (fs.existsSync(absoluteFilePath)) {
+    try {
+      fs.unlinkSync(absoluteFilePath);
+    } catch (error) {
+      throw new CustomError(
+        "Failed to delete audio file from system",
+        500,
+        error
+      );
+    }
+  } else {
+    throw new CustomError("Can't find audio file in storage.", 500);
+  }
+
+  // Delete from database
+  await prisma.audioFile.delete({
+    where: { id: audioId },
+  });
 };

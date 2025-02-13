@@ -14,6 +14,7 @@ import { deleteProfileController } from "./controllers/deleteProfileController";
 import { uploadAudioController } from "./controllers/uploadAudioController";
 import handleFileUpload from "./middlewares/handleFileUpload";
 import { updateAudioController } from "./controllers/updateAudioController";
+import { deleteAudioController } from "./controllers/deleteAudioController";
 
 const app: express.Express = express();
 
@@ -39,6 +40,7 @@ const main = async () => {
     uploadAudioController
   );
   app.patch("/api/audio/:audioId", requiredAuth, updateAudioController);
+  app.delete("/api/audio/:audioId", requiredAuth, deleteAudioController);
 
   app.use(errorHandler);
 

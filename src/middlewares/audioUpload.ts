@@ -2,10 +2,11 @@ import multer from "multer";
 import path from "path";
 import { randomUUID } from "crypto";
 import { CustomError } from "../utils/CustomError";
+import { config } from "../config/config";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads/audio"));
+    cb(null, config.FULL_AUDIO_DIR);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
