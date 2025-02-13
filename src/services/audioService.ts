@@ -1,5 +1,9 @@
 import prisma from "../../prisma/db/prisma";
-import { UpdateAudioDto, UploadAudioDto } from "../models/dtos/audioDtos";
+import {
+  AudioStreamResponseDto,
+  UpdateAudioDto,
+  UploadAudioDto,
+} from "../models/dtos/audioDtos";
 import { CustomError } from "../utils/CustomError";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
@@ -172,8 +176,36 @@ export const deleteAudioService = async (
     throw new CustomError("Can't find audio file in storage.", 500);
   }
 
-  // Delete from database
   await prisma.audioFile.delete({
     where: { id: audioId },
   });
+};
+
+export const getAudioService = async (
+  audioId: string,
+  userId?: string
+): Promise<AudioStreamResponseDto> => {
+  const audioFile = await prisma.audioFile.findUnique({
+    where: { id: audioId },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!audioFile) {
+    throw new Error("Audio file not found");
+  }
+
+  if (!audioFile.isPublic && audioFile.userId !== userId) {
+    throw new Error("Access denied");
+  }
+
+  return {
+    audioId: audioFile.id,
+    audioName: audioFile.audioName,
+    category: audioFile.category,
+    length: audioFile.length,
+    description: audioFile.description,
+    filePath: audioFile.filePath,
+  };
 };

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { loginUserSchema } from "../models/dtos/loginDtos";
-import loginUserService from "../services/loginUserService";
+import { loginUserSchema } from "../../models/dtos/loginDtos";
+import loginUserService from "../../services/loginUserService";
 
 const loginController = async (
   req: Request,

@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
-import { AuthRequest } from "../middlewares/authHandler";
-import { deleteAudioService } from "../services/audioService";
+import { AuthRequest } from "../../middlewares/authHandler";
+import { deleteAudioService } from "../../services/audioService";
 
-export const deleteAudioController = async (
+const deleteAudioController = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -20,3 +20,5 @@ export const deleteAudioController = async (
     next(err);
   }
 };
+
+export default deleteAudioController;

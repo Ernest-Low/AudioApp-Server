@@ -4,17 +4,12 @@ import { config } from "./config/config";
 import cors from "cors";
 import prisma from "../prisma/db/prisma";
 import errorHandler from "./middlewares/errorHandler";
-import registerController from "./controllers/registerController";
 import bodyParser from "body-parser";
-import loginController from "./controllers/loginController";
-import getProfileController from "./controllers/getProfileController";
 import { optionalAuth, requiredAuth } from "./middlewares/authHandler";
-import { updateProfileController } from "./controllers/updateProfileController";
-import { deleteProfileController } from "./controllers/deleteProfileController";
-import { uploadAudioController } from "./controllers/uploadAudioController";
+
 import handleFileUpload from "./middlewares/handleFileUpload";
-import { updateAudioController } from "./controllers/updateAudioController";
-import { deleteAudioController } from "./controllers/deleteAudioController";
+
+import controllers from "./controllers/controllers";
 
 const app: express.Express = express();
 
@@ -28,19 +23,40 @@ const main = async () => {
     res.send("Express + TypeScript Server");
   });
 
-  app.post("/api/register", registerController);
-  app.post("/api/login", loginController);
-  app.get("/api/profile/:username", optionalAuth, getProfileController);
-  app.patch("/api/profile/:userId", requiredAuth, updateProfileController);
-  app.delete("/api/profile/:userId", requiredAuth, deleteProfileController);
+  app.post("/api/register", controllers.registerController);
+  app.post("/api/login", controllers.loginController);
+  app.get(
+    "/api/profile/:username",
+    optionalAuth,
+    controllers.getProfileController
+  );
+  app.patch(
+    "/api/profile/:userId",
+    requiredAuth,
+    controllers.updateProfileController
+  );
+  app.delete(
+    "/api/profile/:userId",
+    requiredAuth,
+    controllers.deleteProfileController
+  );
   app.post(
     "/api/audio/new",
     requiredAuth,
     handleFileUpload,
-    uploadAudioController
+    controllers.uploadAudioController
   );
-  app.patch("/api/audio/:audioId", requiredAuth, updateAudioController);
-  app.delete("/api/audio/:audioId", requiredAuth, deleteAudioController);
+  app.patch(
+    "/api/audio/:audioId",
+    requiredAuth,
+    controllers.updateAudioController
+  );
+  app.delete(
+    "/api/audio/:audioId",
+    requiredAuth,
+    controllers.deleteAudioController
+  );
+  app.get("/api/audio/:audioId", optionalAuth, controllers.getAudioController);
 
   app.use(errorHandler);
 

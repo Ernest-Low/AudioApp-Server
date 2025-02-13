@@ -1,11 +1,11 @@
 import { Response, NextFunction } from "express";
-import { UploadAudioDto, uploadAudioSchema } from "../models/dtos/audioDtos";
-import { uploadAudioService } from "../services/audioService";
-import { AuthRequest } from "../middlewares/authHandler";
+import { UploadAudioDto, uploadAudioSchema } from "../../models/dtos/audioDtos";
+import { uploadAudioService } from "../../services/audioService";
+import { AuthRequest } from "../../middlewares/authHandler";
 import fs from "fs";
-import { CustomError } from "../utils/CustomError";
+import { CustomError } from "../../utils/CustomError";
 
-export const uploadAudioController = async (
+const uploadAudioController = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -70,3 +70,5 @@ export const uploadAudioController = async (
     next(err);
   }
 };
+
+export default uploadAudioController;

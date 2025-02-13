@@ -2,11 +2,11 @@ import { Response, NextFunction } from "express";
 import {
   UpdateProfileDto,
   updateProfileSchema,
-} from "../models/dtos/profileDtos";
-import { updateProfileService } from "../services/profileService";
-import { AuthRequest } from "../middlewares/authHandler";
+} from "../../models/dtos/profileDtos";
+import { updateProfileService } from "../../services/profileService";
+import { AuthRequest } from "../../middlewares/authHandler";
 
-export const updateProfileController = async (
+const updateProfileController = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -46,3 +46,5 @@ export const updateProfileController = async (
     next(err);
   }
 };
+
+export default updateProfileController;

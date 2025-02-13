@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
-import { getProfileService } from "../services/profileService";
-import { AuthRequest } from "../middlewares/authHandler";
+import { getProfileService } from "../../services/profileService";
+import { AuthRequest } from "../../middlewares/authHandler";
 
 const getProfileController = async (
   req: AuthRequest,

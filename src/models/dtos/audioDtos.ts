@@ -78,3 +78,12 @@ export interface ShortAudioResponseDto {
 export interface AudioResponseDto extends ShortAudioResponseDto {
   description: string;
 }
+
+export interface AudioStreamResponseDto {
+  audioId: string;
+  audioName: string;
+  category: string[];
+  description: string;
+  length: number;
+  filePath: string;
+}

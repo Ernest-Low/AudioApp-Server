@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { registerUserSchema } from "../models/dtos/registerDtos";
-import registerUserService from "../services/registerUserService";
+import { registerUserSchema } from "../../models/dtos/registerDtos";
+import registerUserService from "../../services/registerUserService";
 
 const registerController = async (
   req: Request,

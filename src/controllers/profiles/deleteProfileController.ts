@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
-import { deleteProfileService } from "../services/profileService";
-import { AuthRequest } from "../middlewares/authHandler";
+import { deleteProfileService } from "../../services/profileService";
+import { AuthRequest } from "../../middlewares/authHandler";
 
-export const deleteProfileController = async (
+const deleteProfileController = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -27,3 +27,5 @@ export const deleteProfileController = async (
     next(err);
   }
 };
+
+export default deleteProfileController;
