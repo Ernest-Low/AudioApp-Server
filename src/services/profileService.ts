@@ -3,6 +3,7 @@ import prisma from "../../prisma/db/prisma";
 import { UpdateProfileDto } from "../models/dtos/profileDtos";
 import argon2 from "argon2";
 import { ProfileResponseDto } from "../models/dtos/profileDtos";
+import { formatSeconds } from "../utils/formatValues";
 
 export const getProfileService = async (
   username: string,
@@ -18,6 +19,7 @@ export const getProfileService = async (
           select: {
             id: true,
             songName: true,
+            category: true,
             length: true,
           },
         },
@@ -43,7 +45,14 @@ export const getProfileService = async (
       isPrivate: user.isPrivate,
       bio: user.bio,
       email: user.auth?.email,
-      audioFiles: user.files,
+      audioFiles: user.files.map((song) => {
+        return {
+          songId: song.id,
+          songName: song.songName,
+          category: song.category,
+          length: formatSeconds(song.length),
+        };
+      }),
     };
   } catch (err: unknown) {
     if (err instanceof CustomError) {
@@ -142,6 +151,7 @@ export const updateProfileService = async (
           select: {
             id: true,
             songName: true,
+            category: true,
             length: true,
           },
         },
@@ -163,7 +173,14 @@ export const updateProfileService = async (
       isPrivate: updatedProfile.isPrivate,
       bio: updatedProfile.bio,
       email: updatedProfile.auth.email,
-      audioFiles: updatedProfile.files,
+      audioFiles: updatedProfile.files.map((song) => {
+        return {
+          songId: song.id,
+          songName: song.songName,
+          category: song.category,
+          length: formatSeconds(song.length),
+        };
+      }),
     };
   } catch (err: unknown) {
     throw new CustomError("Failed to update profile", 500, err);

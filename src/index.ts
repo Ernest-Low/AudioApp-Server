@@ -11,6 +11,8 @@ import getProfileController from "./controllers/getProfileController";
 import { optionalAuth, requiredAuth } from "./middlewares/authHandler";
 import { updateProfileController } from "./controllers/updateProfileController";
 import { deleteProfileController } from "./controllers/deleteProfileController";
+import { uploadAudioController } from "./controllers/uploadAudioController";
+import handleFileUpload from "./middlewares/handleFileUpload";
 
 const app: express.Express = express();
 
@@ -29,6 +31,12 @@ const main = async () => {
   app.get("/api/profile/:username", optionalAuth, getProfileController);
   app.patch("/api/profile/:userId", requiredAuth, updateProfileController);
   app.delete("/api/profile/:userId", requiredAuth, deleteProfileController);
+  app.post(
+    "/api/audio/new",
+    requiredAuth,
+    handleFileUpload,
+    uploadAudioController
+  );
 
   app.use(errorHandler);
 

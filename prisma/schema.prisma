@@ -45,6 +45,8 @@ model AudioFile {
   length     Int
   uploadedAt DateTime @default(now())
   isPublic   Boolean  @default(false)
+  description String @db.Text
+  category String[]
 
   user       User     @relation(fields: [userId], references: [id])
   userId     String

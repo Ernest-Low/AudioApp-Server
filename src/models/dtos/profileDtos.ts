@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { ShortAudioResponseDto } from "./audioDtos";
 
 export interface ProfileResponseDto {
   userId: string;
@@ -6,11 +7,7 @@ export interface ProfileResponseDto {
   isPrivate: boolean;
   bio: string;
   email: string;
-  audioFiles: {
-    id: string;
-    songName: string;
-    length: number;
-  }[];
+  audioFiles: ShortAudioResponseDto[];
 }
 
 export const updateProfileSchema = Joi.object({
@@ -42,7 +39,7 @@ export const updateProfileSchema = Joi.object({
   .and("oldPassword", "newPassword")
   .messages({
     "object.and":
-      'oldPassword and newPassword must both be provided when updating the password. If you are not updating your password, do not include either field.',
+      "oldPassword and newPassword must both be provided when updating the password. If you are not updating your password, do not include either field.",
   });
 
 export interface UpdateProfileDto {
