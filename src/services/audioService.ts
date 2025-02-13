@@ -72,7 +72,7 @@ export const uploadAudioService = async (
   try {
     const audioFile = await prisma.audioFile.create({
       data: {
-        songName: metadata.songName,
+        audioName: metadata.audioName,
         filePath: `${config.AUDIO_DIR}${file.filename}`,
         size,
         length,
@@ -84,8 +84,8 @@ export const uploadAudioService = async (
     });
 
     const resDto: AudioResponseDto = {
-      songId: audioFile.id,
-      songName: audioFile.songName,
+      audioId: audioFile.id,
+      audioName: audioFile.audioName,
       description: audioFile.description,
       category: audioFile.category,
       length: formatSeconds(audioFile.length),
@@ -129,8 +129,8 @@ export const updateAudioService = async (
   });
 
   const resDto: AudioResponseDto = {
-    songId: updatedAudio.id,
-    songName: updatedAudio.songName,
+    audioId: updatedAudio.id,
+    audioName: updatedAudio.audioName,
     description: updatedAudio.description,
     category: updatedAudio.category,
     length: formatSeconds(updatedAudio.length),

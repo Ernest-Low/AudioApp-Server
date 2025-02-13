@@ -39,7 +39,7 @@ model UserAuth {
 
 model AudioFile {
   id         String   @id @default(uuid())
-  songName   String   @db.VarChar(128) 
+  audioName  String   @db.VarChar(128) 
   filePath   String   @db.VarChar(128) 
   size       Float
   length     Int

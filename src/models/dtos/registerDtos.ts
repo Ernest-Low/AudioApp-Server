@@ -41,6 +41,6 @@ export interface RegisterUserResponseDto {
   // isPrivate: boolean;
   // email: string;
   // bio: string;
-  // Same as login, could return a list of their uploaded songs / playlist
+  // Same as login, could return a list of their uploaded audios / playlist
   jwtToken: string;
 }

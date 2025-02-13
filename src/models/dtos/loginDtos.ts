@@ -22,6 +22,6 @@ export interface LoginUserResponseDto {
   //   isPrivate: boolean;
   //   email: string;
   //   bio: string;
-  // Should return a list of their uploaded songs / playlist
+  // Should return a list of their uploaded audios / playlist
   jwtToken: string;
 }

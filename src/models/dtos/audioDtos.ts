@@ -16,11 +16,11 @@ export enum AudioCategory {
 }
 
 export const uploadAudioSchema = Joi.object({
-  songName: Joi.string().min(2).max(128).required().messages({
-    "any.required": "Song name is required",
-    "string.base": "Song name must be a string",
-    "string.min": "Song name must be at least 2 characters long",
-    "string.max": "Song name cannot be longer than 128 characters",
+  audioName: Joi.string().min(2).max(128).required().messages({
+    "any.required": "Audio name is required",
+    "string.base": "Audio name must be a string",
+    "string.min": "Audio name must be at least 2 characters long",
+    "string.max": "Audio name cannot be longer than 128 characters",
   }),
   isPublic: Joi.boolean().required().messages({
     "boolean.base": "isPublic must be a boolean value",
@@ -36,17 +36,17 @@ export const uploadAudioSchema = Joi.object({
 });
 
 export interface UploadAudioDto {
-  songName: string;
+  audioName: string;
   isPublic: boolean;
   description?: string; // Maybe there's no description, same as bio
   category: string[];
 }
 
 export const updateAudioSchema = Joi.object({
-  songName: Joi.string().min(2).max(128).messages({
-    "string.base": "Song name must be a string",
-    "string.min": "Song name must be at least 2 characters long",
-    "string.max": "Song name cannot be longer than 128 characters",
+  audioName: Joi.string().min(2).max(128).messages({
+    "string.base": "Audio name must be a string",
+    "string.min": "Audio name must be at least 2 characters long",
+    "string.max": "Audio name cannot be longer than 128 characters",
   }),
   isPublic: Joi.boolean().messages({
     "boolean.base": "isPublic must be a boolean value",
@@ -61,15 +61,15 @@ export const updateAudioSchema = Joi.object({
 });
 
 export interface UpdateAudioDto {
-  songName?: string;
+  audioName?: string;
   isPublic?: boolean;
   category?: string[];
   description?: string;
 }
 
 export interface ShortAudioResponseDto {
-  songId: string;
-  songName: string;
+  audioId: string;
+  audioName: string;
   category: string[];
   length: string; // Or should I give it as the raw seconds?
   // size: string; // Same here, though wondering if the frontend even needs to know the size

@@ -18,7 +18,7 @@ export const getProfileService = async (
         files: {
           select: {
             id: true,
-            songName: true,
+            audioName: true,
             category: true,
             length: true,
           },
@@ -45,12 +45,12 @@ export const getProfileService = async (
       isPrivate: user.isPrivate,
       bio: user.bio,
       email: user.auth?.email,
-      audioFiles: user.files.map((song) => {
+      audioFiles: user.files.map((audio) => {
         return {
-          songId: song.id,
-          songName: song.songName,
-          category: song.category,
-          length: formatSeconds(song.length),
+          audioId: audio.id,
+          audioName: audio.audioName,
+          category: audio.category,
+          length: formatSeconds(audio.length),
         };
       }),
     };
@@ -150,7 +150,7 @@ export const updateProfileService = async (
         files: {
           select: {
             id: true,
-            songName: true,
+            audioName: true,
             category: true,
             length: true,
           },
@@ -173,12 +173,12 @@ export const updateProfileService = async (
       isPrivate: updatedProfile.isPrivate,
       bio: updatedProfile.bio,
       email: updatedProfile.auth.email,
-      audioFiles: updatedProfile.files.map((song) => {
+      audioFiles: updatedProfile.files.map((audio) => {
         return {
-          songId: song.id,
-          songName: song.songName,
-          category: song.category,
-          length: formatSeconds(song.length),
+          audioId: audio.id,
+          audioName: audio.audioName,
+          category: audio.category,
+          length: formatSeconds(audio.length),
         };
       }),
     };
