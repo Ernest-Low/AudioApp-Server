@@ -32,7 +32,7 @@ The server follows a **Modular Architecture** with a clean separation between di
 ### 3. **Audio Service**
 
 - Manages audio file storage and metadata.
-- Allows users to upload, update, and delete audio files.
+- Allows users to view, stream, upload, update, and delete audio files.
 - Supports making files public or private.
 - Audio files are stored locally in the `/uploads/audio` directory.
 - Audio files are associated with genres and other metadata.
@@ -48,20 +48,7 @@ The server follows a **Modular Architecture** with a clean separation between di
 ### 5. **Endpoints**
 
 - The server exposes a RESTful API for interacting with the system.
-- Example endpoints include:
-  - `POST /api/login`: Authenticate users.
-  - `GET /api/profile/:username`: Fetch a user's profile (public or private).
-  - `GET /api/audio/list`: Get a list of audio files with optional filters and pagination.
-  - `POST /api/audio/upload`: Upload a new audio file.
-  - `PATCH /api/audio/:audioId`: Update an audio file's metadata.
-  - `DELETE /api/audio/:audioId`: Delete an audio file.
-
-## Postman Collection
-
-A Postman collection JSON file with all available API endpoints is included for easy testing. It contains predefined requests for the following:
-
-- Authentication requests (Login)
-- User profile management
-- Audio file management (Upload, Update, Delete, List)
-
-You can import the Postman collection by downloading the **`postman_collection.json`** file included in this repository.
+- A postman collection **`AudioApp.postman_collection.json`** is available in the file repository.
+  - `Authentication ( loginUser, registerUser )`
+  - `User profile management ( getProfile, updateProfile, deleteProfile )`
+  - `Audio file management ( listAudio, getAudioData, streamAudio, uploadAudio, updateAudio, deleteAudio )`
