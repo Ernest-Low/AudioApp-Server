@@ -52,3 +52,12 @@ The server follows a **Modular Architecture** with a clean separation between di
   - `Authentication ( loginUser, registerUser )`
   - `User profile management ( getProfile, updateProfile, deleteProfile )`
   - `Audio file management ( listAudio, getAudioData, streamAudio, uploadAudio, updateAudio, deleteAudio )`
+
+## .env File
+- For the .env file, it requires the following:
+  - `PORT - Any port for hosting the server on, I used 3000`
+  - `AUTH_KEY - for the JWT, any string will do`
+  - `UPLOAD_DIR - Directory in root that the uploaded audio files will go to. I used "uploads/audio/"`
+  - `DATABASE_URL - For prisma. This used PostgreSQL, so the url goes something like this: "postgresql://username:password@localhost:5432/audioapp?schema=audioapp"`
+- Other changes not in .env
+  - If you're looking to host the frontend along, under config it has allowedOrigins.ts. Include the url there (default, has "http://localhost:5173")
